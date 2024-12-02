@@ -1,0 +1,324 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentação API de Produtos",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Login do usuário",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login realizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciais inválidas"
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Listar todos os produtos",
+                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
+                "responses": {
+                    "200": {
+                        "description": "Lista de produtos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Criar um novo produto",
+                "operationId": "e8185e307706e2cd84bbcf5171e2f09d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nome do produto",
+                                        "type": "string",
+                                        "example": "Produto A"
+                                    },
+                                    "price": {
+                                        "description": "Preço do produto",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 99.99
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Produto criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação, dados informados estão incorretos"
+                    }
+                }
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Obter um produto específico",
+                "operationId": "7ab21ddb713501f3d4c2914892c02a21",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do produto a ser obtido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Produto encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Produto não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Atualizar um produto existente",
+                "operationId": "6a7e11900844cd85cff66e662b82bd4c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do produto a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nome do produto",
+                                        "type": "string",
+                                        "example": "Produto A"
+                                    },
+                                    "price": {
+                                        "description": "Preço do produto",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 99.99
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Produto atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Produto não encontrado ou acesso não autorizado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Remover um produto",
+                "operationId": "e80a6ca46716acee6b47ea1ac91663c0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do produto a ser removido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Produto removido com sucesso"
+                    },
+                    "404": {
+                        "description": "Produto não encontrado ou acesso não autorizado"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Product": {
+                "properties": {
+                    "id": {
+                        "description": "ID do produto",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Nome do produto",
+                        "type": "string",
+                        "example": "Produto A"
+                    },
+                    "price": {
+                        "description": "Preço do produto",
+                        "type": "number",
+                        "format": "float",
+                        "example": 99.99
+                    },
+                    "created_at": {
+                        "description": "Data de criação do produto",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Data da última atualização do produto",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "user_id": {
+                        "description": "ID do usuário que criou o produto",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Insira o token JWT no formato Bearer <token>",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticação",
+            "description": "Operações de autenticação"
+        },
+        {
+            "name": "Produtos",
+            "description": "Produtos"
+        }
+    ],
+    "security": [
+        {
+            "bearer": []
+        }
+    ]
+}
