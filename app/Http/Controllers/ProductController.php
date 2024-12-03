@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
  *     schema="Product",
  *     @OA\Property(property="id", type="integer", example=1, description="ID do produto"),
  *     @OA\Property(property="name", type="string", example="Produto A", description="Nome do produto"),
+ *     @OA\Property(property="description", type="string", example="Uma descrição do produto", description="Descrição do produto"),
  *     @OA\Property(property="price", type="number", format="float", example=99.99, description="Preço do produto"),
  *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-01-01T00:00:00Z", description="Data de criação do produto"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-01-01T00:00:00Z", description="Data da última atualização do produto"),
@@ -31,6 +32,7 @@ class ProductController extends Controller
      *     path="/api/products",
      *     summary="Listar todos os produtos",
      *     tags={"Produtos"},
+     *     security={{"bearer": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de produtos retornada com sucesso",
@@ -51,11 +53,13 @@ class ProductController extends Controller
      *     path="/api/products",
      *     summary="Criar um novo produto",
      *     tags={"Produtos"},
+     *     security={{"bearer": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"name", "price"},
      *             @OA\Property(property="name", type="string", example="Produto A", description="Nome do produto"),
+     *             @OA\Property(property="description", type="string", example="Uma descrição do produto", description="Descrição do produto"),
      *             @OA\Property(property="price", type="number", format="float", example=99.99, description="Preço do produto")
      *         )
      *     ),
@@ -74,10 +78,14 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'price' => 'required|numeric'
         ]);
 
-        $product = Product::create(array_merge($request->all(), ['user_id' => auth()->id()]));
+        // Obtendo o ID do usuário autenticado a partir do middleware
+        $userId = request()->attributes->get('user_id');
+
+        $product = Product::create(array_merge($request->all(), ['user_id' => $userId]));
         return response()->json($product, 201);
     }
 
@@ -86,6 +94,7 @@ class ProductController extends Controller
      *     path="/api/products/{id}",
      *     summary="Obter um produto específico",
      *     tags={"Produtos"},
+     *     security={{"bearer": {}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -118,6 +127,7 @@ class ProductController extends Controller
      *     path="/api/products/{id}",
      *     summary="Atualizar um produto existente",
      *     tags={"Produtos"},
+     *     security={{"bearer": {}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -130,6 +140,7 @@ class ProductController extends Controller
      *         @OA\JsonContent(
      *             required={"name", "price"},
      *             @OA\Property(property="name", type="string", example="Produto A", description="Nome do produto"),
+     *             @OA\Property(property="description", type="string", example="Uma descrição do produto", description="Descrição do produto"),
      *             @OA\Property(property="price", type="number", format="float", example=99.99, description="Preço do produto")
      *         )
      *     ),
@@ -148,10 +159,14 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'price' => 'required|numeric'
         ]);
 
-        $product = Product::where('id', $id)->where('user_id', auth()->id())->first();
+        // Obtendo o ID do usuário autenticado a partir do middleware
+        $userId = request()->attributes->get('user_id');
+
+        $product = Product::where('id', $id)->where('user_id', $userId)->first();
         if (!$product) {
             return response()->json(['message' => 'Produto não encontrado ou acesso não autorizado'], 404);
         }
@@ -165,6 +180,7 @@ class ProductController extends Controller
      *     path="/api/products/{id}",
      *     summary="Remover um produto",
      *     tags={"Produtos"},
+     *     security={{"bearer": {}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -184,7 +200,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::where('id', $id)->where('user_id', auth()->id())->first();
+        // Obtendo o ID do usuário autenticado a partir do middleware
+        $userId = request()->attributes->get('user_id');
+
+        $product = Product::where('id', $id)->where('user_id', $userId)->first();
         if (!$product) {
             return response()->json(['message' => 'Produto não encontrado ou acesso não autorizado'], 404);
         }

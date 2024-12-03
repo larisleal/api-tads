@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Firebase\JWT\JWT;
 
 /**
  * @OA\Tag(
@@ -58,17 +57,7 @@ class AuthController extends Controller
 
         $data = $response->json();
 
-        // Gerar um novo token JWT
-        $token = JWT::encode(
-            [
-                'sub' => $data['sub'],
-                'iat' => time(),
-                'exp' => time() + 3600 // O token é válido por 1 hora
-            ],
-            env('JWT_SECRET'),
-            'HS256'
-        );
-
-        return response()->json(['token' => $token], 200);
+        // Retornar o token JWT fornecido pelo Keycloak
+        return response()->json(['token' => $data['access_token']], 200);
     }
 }

@@ -6,10 +6,10 @@ use App\Http\Controllers\ProductController;
 
 Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware('jwt')->group(function () {
-    Route::get('/api/products', [ProductController::class, 'index']);
-    Route::post('/api/products', [ProductController::class, 'store']);
-    Route::get('/api/products/{id}', [ProductController::class, 'show']);
-    Route::put('/api/products/{id}', [ProductController::class, 'update']);
-    Route::delete('/api/products/{id}', [ProductController::class, 'destroy']);
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::get('/products/{id}', [ProductController::class, 'show']);
+    Route::put('/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 });

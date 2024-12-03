@@ -82,7 +82,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -104,6 +109,11 @@
                                         "description": "Nome do produto",
                                         "type": "string",
                                         "example": "Produto A"
+                                    },
+                                    "description": {
+                                        "description": "Descrição do produto",
+                                        "type": "string",
+                                        "example": "Uma descrição do produto"
                                     },
                                     "price": {
                                         "description": "Preço do produto",
@@ -131,7 +141,12 @@
                     "400": {
                         "description": "Erro de validação, dados informados estão incorretos"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/products/{id}": {
@@ -166,7 +181,12 @@
                     "404": {
                         "description": "Produto não encontrado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -200,6 +220,11 @@
                                         "type": "string",
                                         "example": "Produto A"
                                     },
+                                    "description": {
+                                        "description": "Descrição do produto",
+                                        "type": "string",
+                                        "example": "Uma descrição do produto"
+                                    },
                                     "price": {
                                         "description": "Preço do produto",
                                         "type": "number",
@@ -226,7 +251,12 @@
                     "404": {
                         "description": "Produto não encontrado ou acesso não autorizado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -252,7 +282,12 @@
                     "404": {
                         "description": "Produto não encontrado ou acesso não autorizado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         }
     },
@@ -269,6 +304,11 @@
                         "description": "Nome do produto",
                         "type": "string",
                         "example": "Produto A"
+                    },
+                    "description": {
+                        "description": "Descrição do produto",
+                        "type": "string",
+                        "example": "Uma descrição do produto"
                     },
                     "price": {
                         "description": "Preço do produto",

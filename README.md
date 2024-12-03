@@ -1,10 +1,9 @@
-# api-tads
-Trabalho de Técnicas Avançadas de Desenvolvimento de Software - FACOM 2024
 # README
 
 ## API de Produtos
 
-Este é um projeto de API desenvolvido como parte do Trabalho de Técnicas Avançadas de Desenvolvimento de Software - FACOM 2024. A API é projetada para gerenciar produtos e incluir autenticação via JWT e Keycloak.
+Este projeto é uma API desenvolvida como parte do Trabalho de Técnicas Avançadas de Desenvolvimento de Software - FACOM 2024. A API tem como objetivo gerenciar produtos de forma eficiente, permitindo operações como criação, listagem, atualização e remoção de produtos. A implementação inclui autenticação utilizando JWT e Keycloak, que são padrões modernos para garantir a segurança das APIs.
+
 
 ### Pré-requisitos
 
